@@ -46,3 +46,4 @@ app.*.map.json
 
 android/.gradle/
 ios/Pods/
+.env

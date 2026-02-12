@@ -1,3 +1,4 @@
+import 'pages/sign_up_page.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'dart:async';
@@ -114,12 +115,29 @@ class HomePage extends StatelessWidget {
         ),
       ),
       backgroundColor: Colors.white,
-      body: const Center(
-        child: Text(
-          'Connexion Supabase réussie 🚀',
-          style: TextStyle(fontSize: 18, color: Colors.black),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'Connexion Supabase réussie 🚀',
+              style: TextStyle(fontSize: 18, color: Colors.black),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => SignUpPage()),
+                );
+              },
+              child: const Text('Créer un compte'),
+            ),
+          ],
         ),
       ),
     );
   }
 }
+
+

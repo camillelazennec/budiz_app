@@ -129,12 +129,23 @@ class HomePage extends StatelessWidget {
               'Connexion Supabase réussie 🚀',
               style: TextStyle(fontSize: 18, color: Colors.black),
             ),
-            const SizedBox(height: 20),
+
+            const SizedBox(height: 30),
+
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/login');
+              },
+              child: const Text('Se connecter'),
+            ),
+
+            const SizedBox(height: 10),
+
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => SignUpPage()),
+                  MaterialPageRoute(builder: (_) => const SignUpPage()),
                 );
               },
               child: const Text('Créer un compte'),
@@ -145,5 +156,3 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-
-

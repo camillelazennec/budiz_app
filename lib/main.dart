@@ -1,4 +1,6 @@
 import 'pages/sign_up_page.dart';
+import 'pages/login_page.dart';
+import 'pages/complete_profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'dart:async';
@@ -33,6 +35,10 @@ class MyApp extends StatelessWidget {
         ),
       ),
       home: const SplashPage(),
+      routes: {
+        '/login': (_) => const LoginPage(),
+        '/home': (_) => const HomePage(),
+      },
     );
   }
 }

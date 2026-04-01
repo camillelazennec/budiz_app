@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'home_page.dart';
+
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
@@ -29,6 +31,7 @@ class _SignUpPageState extends State<SignUpPage> {
         },
       );
 
+      if (!mounted) return;
       // Si user est null, il y a un problème
       if (response.user == null) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -38,14 +41,18 @@ class _SignUpPageState extends State<SignUpPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Compte créé ! Vérifie ton email.')),
         );
-        Navigator.pop(context); // Revenir à HomePage
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (_) => const HomePage()),
+          (_) => false,
+        );
       }
     } on AuthException catch (e) {
-      // Gestion des erreurs Supabase
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Erreur : ${e.message}')),
       );
     } catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Erreur inconnue : $e')),
       );

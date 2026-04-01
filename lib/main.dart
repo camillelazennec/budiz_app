@@ -1,9 +1,11 @@
-import 'pages/sign_up_page.dart';
-import 'pages/login_page.dart';
-import 'pages/complete_profile_page.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'dart:async';
+
+import 'pages/login_page.dart';
+import 'pages/profile_page.dart';
+import 'pages/sign_up_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,6 +40,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (_) => const LoginPage(),
         '/home': (_) => const HomePage(),
+        '/profile': (_) => const ProfilePage(),
       },
     );
   }

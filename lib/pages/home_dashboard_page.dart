@@ -43,14 +43,34 @@ class HomeDashboardPage extends StatelessWidget {
     final initials = _initials();
     final topInset = MediaQuery.paddingOf(context).top;
     final bottomInset = MediaQuery.paddingOf(context).bottom;
+    final viewHeight = MediaQuery.sizeOf(context).height;
+    // Espace sous le dernier bloc pour dépasser la barre nav + FAB (extendBody)
+    final scrollEndPadding =
+        180 + bottomInset + (viewHeight * 0.08).clamp(40.0, 96.0);
 
     return ColoredBox(
       color: AppColors.scaffoldBg,
-      child: CustomScrollView(
-        physics: const AlwaysScrollableScrollPhysics(
-          parent: BouncingScrollPhysics(),
-        ),
-        slivers: [
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // Sans hauteur max FINIE, le CustomScrollView shrink-wrappe tout le contenu
+          // → maxScrollExtent = 0 → aucun scroll. D’où la page « figée ».
+          final maxH = constraints.maxHeight;
+          final maxW = constraints.maxWidth;
+          final viewportH = maxH.isFinite && maxH > 0
+              ? maxH
+              : viewHeight;
+          final viewportW = maxW.isFinite && maxW > 0
+              ? maxW
+              : MediaQuery.sizeOf(context).width;
+
+          return SizedBox(
+            width: viewportW,
+            height: viewportH,
+            child: CustomScrollView(
+              physics: const AlwaysScrollableScrollPhysics(
+                parent: BouncingScrollPhysics(),
+              ),
+              slivers: [
           SliverToBoxAdapter(
             child: Padding(
               padding: EdgeInsets.fromLTRB(20, topInset + 20, 20, 0),
@@ -113,38 +133,42 @@ class HomeDashboardPage extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: TextField(
-                      readOnly: true,
-                      onTap: () {},
-                      decoration: InputDecoration(
-                        hintText: 'Rechercher un évènement',
-                        hintStyle: TextStyle(
-                          color: Colors.black.withValues(alpha: 0.35),
-                          fontSize: 15,
-                        ),
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.only(left: 12, right: 8),
-                          child: Image.asset(
-                            'assets/Loupe.webp',
-                            width: 22,
-                            height: 22,
-                            errorBuilder: (context, error, stackTrace) => Icon(
-                              Icons.search,
-                              color: Colors.black.withValues(alpha: 0.35),
-                            ),
+                    child: Material(
+                      color: AppColors.searchFill,
+                      borderRadius: BorderRadius.circular(14),
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(14),
+                        onTap: () {},
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 14,
+                          ),
+                          child: Row(
+                            children: [
+                              Image.asset(
+                                'assets/Loupe.webp',
+                                width: 22,
+                                height: 22,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    Icon(
+                                  Icons.search,
+                                  color: Colors.black.withValues(alpha: 0.35),
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  'Rechercher un évènement',
+                                  style: TextStyle(
+                                    color: Colors.black.withValues(alpha: 0.35),
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        prefixIconConstraints: const BoxConstraints(
-                          minWidth: 44,
-                          minHeight: 48,
-                        ),
-                        filled: true,
-                        fillColor: AppColors.searchFill,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(14),
-                          borderSide: BorderSide.none,
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(vertical: 14),
                       ),
                     ),
                   ),
@@ -180,9 +204,12 @@ class HomeDashboardPage extends StatelessWidget {
           SliverToBoxAdapter(child: _sectionHeader('Nos recommandations')),
           SliverToBoxAdapter(child: _recommendationsCarousel(context)),
           SliverToBoxAdapter(
-            child: SizedBox(height: 140 + bottomInset),
+            child: SizedBox(height: scrollEndPadding),
           ),
-        ],
+              ],
+            ),
+          );
+        },
       ),
     );
   }
@@ -375,6 +402,7 @@ class HomeDashboardPage extends StatelessWidget {
     return SizedBox(
       height: 220,
       child: ListView(
+        primary: false,
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16),
         children: [
@@ -409,6 +437,7 @@ class HomeDashboardPage extends StatelessWidget {
     return SizedBox(
       height: 220,
       child: ListView(
+        primary: false,
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16),
         children: [

@@ -21,11 +21,12 @@ class _MainShellState extends State<MainShell> {
       extendBody: true,
       body: IndexedStack(
         index: _index,
-        children: const [
-          HomeDashboardPage(),
-          _ExplorerPlaceholder(),
-          _ActivitiesPlaceholder(),
-          _ChatPlaceholder(),
+        sizing: StackFit.expand,
+        children: [
+          SizedBox.expand(child: HomeDashboardPage()),
+          SizedBox.expand(child: const _ExplorerPlaceholder()),
+          SizedBox.expand(child: const _ActivitiesPlaceholder()),
+          SizedBox.expand(child: const _ChatPlaceholder()),
         ],
       ),
       floatingActionButton: Padding(

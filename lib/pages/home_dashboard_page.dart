@@ -41,14 +41,19 @@ class HomeDashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final name = _welcomeName();
     final initials = _initials();
+    final topInset = MediaQuery.paddingOf(context).top;
+    final bottomInset = MediaQuery.paddingOf(context).bottom;
 
     return ColoredBox(
       color: AppColors.scaffoldBg,
       child: CustomScrollView(
+        physics: const AlwaysScrollableScrollPhysics(
+          parent: BouncingScrollPhysics(),
+        ),
         slivers: [
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+              padding: EdgeInsets.fromLTRB(20, topInset + 20, 20, 0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -174,7 +179,9 @@ class HomeDashboardPage extends StatelessWidget {
           SliverToBoxAdapter(child: _activityCarousel(context)),
           SliverToBoxAdapter(child: _sectionHeader('Nos recommandations')),
           SliverToBoxAdapter(child: _recommendationsCarousel(context)),
-          const SliverToBoxAdapter(child: SizedBox(height: 100)),
+          SliverToBoxAdapter(
+            child: SizedBox(height: 140 + bottomInset),
+          ),
         ],
       ),
     );

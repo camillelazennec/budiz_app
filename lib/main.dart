@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'pages/login_page.dart';
 import 'pages/onboarding_page.dart';
+import 'pages/sign_up_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,13 +30,17 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFFEC6A6D), // rose
+          seedColor: const Color(0xFFEF7171),
         ),
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFFEC6A6D),
+          backgroundColor: Color(0xFFEF7171),
         ),
       ),
       home: const SplashPage(),
+      routes: {
+        '/login': (_) => const LoginPage(),
+        '/signup': (_) => const SignUpPage(),
+      },
     );
   }
 }

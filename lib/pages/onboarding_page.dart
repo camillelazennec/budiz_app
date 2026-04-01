@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'home_page.dart';
 import 'login_page.dart';
+import 'main_shell.dart';
 import 'sign_up_page.dart';
 
 /// Couleur corail des maquettes (#F66D6D).
@@ -57,7 +57,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   void _goHome() {
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const HomePage()),
+      MaterialPageRoute(builder: (_) => const MainShell()),
     );
   }
 

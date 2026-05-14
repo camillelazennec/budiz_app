@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
+import 'create_activity_page.dart';
+import 'explore_page.dart';
 import 'home_dashboard_page.dart';
+import 'user_activities_page.dart';
 
 /// Conteneur principal après connexion : onglets + FAB (maquette).
 class MainShell extends StatefulWidget {
@@ -14,6 +17,16 @@ class MainShell extends StatefulWidget {
 class _MainShellState extends State<MainShell> {
   int _index = 0;
 
+  Future<void> _openCreateActivity() async {
+    final result = await Navigator.of(context).push<String>(
+      MaterialPageRoute(builder: (_) => const CreateActivityPage()),
+    );
+    if (!mounted) return;
+    if (result == 'activities') {
+      setState(() => _index = 2);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,20 +37,22 @@ class _MainShellState extends State<MainShell> {
         sizing: StackFit.expand,
         children: [
           SizedBox.expand(child: HomeDashboardPage()),
-          SizedBox.expand(child: const _ExplorerPlaceholder()),
-          SizedBox.expand(child: const _ActivitiesPlaceholder()),
+          SizedBox.expand(child: const ExplorePage()),
+          SizedBox.expand(child: const UserActivitiesPage()),
           SizedBox.expand(child: const _ChatPlaceholder()),
         ],
       ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 56),
-        child: FloatingActionButton(
-          onPressed: () {},
-          backgroundColor: AppColors.coral,
-          elevation: 4,
-          child: const Icon(Icons.add, color: Colors.white, size: 32),
-        ),
-      ),
+      floatingActionButton: _index == 0
+          ? Padding(
+              padding: const EdgeInsets.only(bottom: 56),
+              child: FloatingActionButton(
+                onPressed: _openCreateActivity,
+                backgroundColor: AppColors.coral,
+                elevation: 4,
+                child: const Icon(Icons.add, color: Colors.white, size: 32),
+              ),
+            )
+          : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
@@ -140,27 +155,6 @@ class _NavEntry extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class _ExplorerPlaceholder extends StatelessWidget {
-  const _ExplorerPlaceholder();
-
-  @override
-  Widget build(BuildContext context) {
-    return const _SimplePlaceholder(title: 'Explorer', message: 'Carte à venir');
-  }
-}
-
-class _ActivitiesPlaceholder extends StatelessWidget {
-  const _ActivitiesPlaceholder();
-
-  @override
-  Widget build(BuildContext context) {
-    return const _SimplePlaceholder(
-      title: 'Activités',
-      message: 'Tes activités à venir',
     );
   }
 }
